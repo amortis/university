@@ -1,0 +1,16 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите : ");
+        int % = int.Parse(Console.ReadLine());
+        Console.WriteLine("Введите %: ");
+        int % = int.Parse(Console.ReadLine());
+        Console.WriteLine("Введите %: ");
+        int % = int.Parse(Console.ReadLine());
+        int result = Math.Pow(x, 2 * n) + Math.Pow(y, 2 * n);
+        Console.WriteLine($"Result: {result}");
+    }
+}
