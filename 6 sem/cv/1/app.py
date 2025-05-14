@@ -12,6 +12,16 @@ app = Flask(__name__)
 # Глобальная переменная для хранения исходного изображения
 original_image = None
 
+# Словарь для преобразования цветовых пространств
+COLOR_SPACES = {
+    'RGB': cv2.COLOR_BGR2RGB,
+    'HSV': cv2.COLOR_BGR2HSV,
+    'LAB': cv2.COLOR_BGR2LAB,
+    'GRAY': cv2.COLOR_BGR2GRAY,
+    'YCrCb': cv2.COLOR_BGR2YCrCb,
+    'XYZ': cv2.COLOR_BGR2XYZ,
+    'HLS': cv2.COLOR_BGR2HLS
+}
 
 # Вспомогательные функции
 def base64_to_image(base64_string):
@@ -316,6 +326,137 @@ def save_image():
     finally:
         if os.path.exists(filename):
             os.remove(filename)
+
+
+@app.route('/convert_color_space', methods=['POST'])
+def convert_color_space():
+    try:
+        data = request.json
+        img_base64 = data.get('image')
+        target_space = data.get('space', 'BGR')
+
+        if target_space == 'BGR':
+            # Если выбрано BGR, просто возвращаем исходное изображение
+            img, error = base64_to_image(img_base64)
+            if img is None:
+                return jsonify({'error': f'Ошибка обработки: {error}'}), 400
+            result = image_to_base64(img)
+            return jsonify({'result': result})
+
+        if target_space not in COLOR_SPACES:
+            return jsonify({'error': f'Неподдерживаемое цветовое пространство. Доступные: BGR, {", ".join(COLOR_SPACES.keys())}'}), 400
+
+        img, error = base64_to_image(img_base64)
+        if img is None:
+            return jsonify({'error': f'Ошибка обработки: {error}'}), 400
+
+        # Преобразование в целевое цветовое пространство
+        converted = cv2.cvtColor(img, COLOR_SPACES[target_space])
+        
+        # Если это одноканальное изображение (GRAY), преобразуем его в трехканальное для отображения
+        if len(converted.shape) == 2:
+            converted = cv2.cvtColor(converted, cv2.COLOR_GRAY2BGR)
+
+        result = image_to_base64(converted)
+        return jsonify({'result': result})
+    except Exception as e:
+        return jsonify({'error': f'Ошибка преобразования цветового пространства: {str(e)}'}), 400
+
+
+@app.route('/find_by_color', methods=['POST'])
+def find_by_color():
+    try:
+        data = request.json
+        img_base64 = data.get('image')
+        color = data.get('color', [0, 0, 0])  # [R,G,B]
+        mode = data.get('mode', 'box')  # 'box' или 'crop'
+        max_objects = int(data.get('maxObjects', 5))
+
+        img, error = base64_to_image(img_base64)
+        if img is None:
+            return jsonify({'error': f'Ошибка обработки: {error}'}), 400
+
+        # Конвертируем RGB в HSV
+        hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        
+        # Преобразуем RGB в HSV для центрального значения
+        rgb_color = np.uint8([[color]])
+        hsv_color = cv2.cvtColor(rgb_color, cv2.COLOR_RGB2HSV)[0][0]
+        
+        # Определяем границы HSV
+        h, s, v = hsv_color
+        
+        # Особый случай для красного цвета
+        if h < 10 or h > 170:  # Красный цвет находится около 0 и 180 градусов
+            # Создаем две маски для красного цвета
+            lower_red1 = np.array([0, 50, 50], dtype=np.uint8)
+            upper_red1 = np.array([10, 255, 255], dtype=np.uint8)
+            lower_red2 = np.array([170, 50, 50], dtype=np.uint8)
+            upper_red2 = np.array([180, 255, 255], dtype=np.uint8)
+            
+            # Объединяем маски
+            mask1 = cv2.inRange(hsv_img, lower_red1, upper_red1)
+            mask2 = cv2.inRange(hsv_img, lower_red2, upper_red2)
+            mask = cv2.bitwise_or(mask1, mask2)
+        else:
+            # Для остальных цветов используем стандартный диапазон
+            color_low = np.array([max(0, h - 30), 50, 50], dtype=np.uint8)
+            color_high = np.array([min(180, h + 30), 255, 255], dtype=np.uint8)
+            mask = cv2.inRange(hsv_img, color_low, color_high)
+
+        # Находим контуры
+        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        if not contours:
+            return jsonify({'error': 'Объекты указанного цвета не найдены'}), 400
+
+        # Сортируем контуры по площади (от большего к меньшему)
+        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:max_objects]
+
+        # Собираем информацию о найденных объектах
+        objects_info = []
+        result_img = img.copy()
+
+        for i, contour in enumerate(contours):
+            x, y, w, h = cv2.boundingRect(contour)
+            area = cv2.contourArea(contour)
+            center_x = x + w // 2
+            center_y = y + h // 2
+            
+            if mode == 'box':
+                # Рисуем рамку вокруг объекта
+                color = (0, 255, 0) if i == 0 else (255, 0, 0)  # Первый объект зеленый, остальные красные
+                cv2.rectangle(result_img, (x, y), (x + w, y + h), color, 2)
+                
+                # Добавляем текст с номером объекта и координатами центра
+                label = f'#{i+1} ({center_x}, {center_y})'
+                cv2.putText(result_img, label, (x, y-10), 
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+            else:  # crop
+                # Для режима обрезки берем только первый (самый большой) объект
+                if i == 0:
+                    result_img = img[y:y+h, x:x+w]
+                    break
+
+            objects_info.append({
+                'number': i + 1,
+                'x': int(x),
+                'y': int(y),
+                'width': int(w),
+                'height': int(h),
+                'area': float(area),
+                'center_x': int(center_x),
+                'center_y': int(center_y)
+            })
+
+        result = image_to_base64(result_img)
+        return jsonify({
+            'result': result,
+            'objects': objects_info,
+            'total_found': len(contours)
+        })
+    except Exception as e:
+        return jsonify({'error': f'Ошибка поиска по цвету: {str(e)}'}), 400
 
 
 if __name__ == '__main__':

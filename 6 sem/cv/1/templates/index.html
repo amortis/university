@@ -93,14 +93,59 @@
                     <button onclick="rotateImage()" class="btn btn-primary w-100">Повернуть</button>
 
                     <h3>Яркость и контрастность</h3>
-                    <input type="range" id="brightness" min="-100" max="100" value="0" class="form-range">
-                    <input type="range" id="contrast" min="0" max="3" step="0.1" value="1" class="form-range">
+                    <div class="mb-2">
+                        <label>Яркость:</label>
+                        <div class="input-group">
+                            <input type="range" id="brightness" min="-100" max="100" value="0" class="form-range" 
+                                   oninput="updateBrightnessValue(this.value)">
+                            <input type="number" id="brightnessValue" class="form-control" style="width: 80px" 
+                                   min="-100" max="100" value="0" onchange="updateBrightnessSlider(this.value)">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label>Контрастность:</label>
+                        <div class="input-group">
+                            <input type="range" id="contrast" min="0" max="3" step="0.1" value="1" class="form-range"
+                                   oninput="updateContrastValue(this.value)">
+                            <input type="number" id="contrastValue" class="form-control" style="width: 80px" 
+                                   min="0" max="3" step="0.1" value="1" onchange="updateContrastSlider(this.value)">
+                            <span class="input-group-text">x</span>
+                        </div>
+                    </div>
                     <button onclick="adjustBrightnessContrast()" class="btn btn-primary w-100">Применить</button>
 
                     <h3>Цветовой баланс</h3>
-                    <input type="range" id="red" min="0" max="2" step="0.1" value="1" class="form-range">
-                    <input type="range" id="green" min="0" max="2" step="0.1" value="1" class="form-range">
-                    <input type="range" id="blue" min="0" max="2" step="0.1" value="1" class="form-range">
+                    <div class="mb-2">
+                        <label>Красный:</label>
+                        <div class="input-group">
+                            <input type="range" id="red" min="0" max="2" step="0.1" value="1" class="form-range"
+                                   oninput="updateRedValue(this.value)">
+                            <input type="number" id="redValue" class="form-control" style="width: 80px" 
+                                   min="0" max="2" step="0.1" value="1" onchange="updateRedSlider(this.value)">
+                            <span class="input-group-text">x</span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label>Зеленый:</label>
+                        <div class="input-group">
+                            <input type="range" id="green" min="0" max="2" step="0.1" value="1" class="form-range"
+                                   oninput="updateGreenValue(this.value)">
+                            <input type="number" id="greenValue" class="form-control" style="width: 80px" 
+                                   min="0" max="2" step="0.1" value="1" onchange="updateGreenSlider(this.value)">
+                            <span class="input-group-text">x</span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label>Синий:</label>
+                        <div class="input-group">
+                            <input type="range" id="blue" min="0" max="2" step="0.1" value="1" class="form-range"
+                                   oninput="updateBlueValue(this.value)">
+                            <input type="number" id="blueValue" class="form-control" style="width: 80px" 
+                                   min="0" max="2" step="0.1" value="1" onchange="updateBlueSlider(this.value)">
+                            <span class="input-group-text">x</span>
+                        </div>
+                    </div>
                     <button onclick="adjustColorBalance()" class="btn btn-primary w-100">Применить</button>
 
                     <h3>Шум</h3>
@@ -118,6 +163,59 @@
                     </select>
                     <input type="number" id="ksize" placeholder="Размер ядра (нечётное)" value="5" class="form-control">
                     <button onclick="blurImage()" class="btn btn-primary w-100">Размыть</button>
+
+
+                    <hr class="my-4 border-2 border-primary">
+                    <h2 class="text-center mb-4">Задание 2</h2>
+
+                    <h3>Цветовое пространство</h3>
+                    <select id="colorSpace" class="form-select">
+                        <option value="BGR">BGR</option>
+                        <option value="RGB">RGB</option>
+                        <option value="HSV">HSV</option>
+                        <option value="LAB">LAB</option>
+                        <option value="GRAY">GRAY</option>
+                        <option value="YCrCb">YCrCb</option>
+                        <option value="XYZ">XYZ</option>
+                        <option value="HLS">HLS</option>
+                    </select>
+                    <button onclick="convertColorSpace()" class="btn btn-primary w-100">Преобразовать</button>
+
+                    <h3>Поиск по цвету</h3>
+                    <select id="colorSpaceSearch" class="form-select">
+                        <option value="RGB">RGB</option>
+                        <option value="HSV">HSV</option>
+                    </select>
+                    <div class="mb-2">
+                        <label>Выберите цвет:</label>
+                        <input type="color" id="colorPicker" class="form-control form-control-color w-100" value="#000000" 
+                               title="Выберите цвет для поиска">
+                    </div>
+                    <div class="mb-2">
+                        <label>Порог отклонения:</label>
+                        <div class="input-group">
+                            <input type="range" id="colorThreshold" min="0" max="100" value="30" class="form-range"
+                                   oninput="updateThresholdValue(this.value)">
+                            <input type="number" id="thresholdValue" class="form-control" style="width: 80px" 
+                                   min="0" max="100" value="30" onchange="updateThresholdSlider(this.value)">
+                            <span class="input-group-text">ед.</span>
+                        </div>
+                        <small class="text-muted">Чем меньше значение, тем точнее должен совпадать цвет</small>
+                    </div>
+                    <div class="mb-2">
+                        <label>Максимум объектов:</label>
+                        <input type="number" id="maxObjects" class="form-control" min="1" max="10" value="5">
+                        <small class="text-muted">Максимальное количество объектов для поиска</small>
+                    </div>
+                    <div class="mb-2">
+                        <label>Режим отображения:</label>
+                        <select id="colorSearchMode" class="form-select">
+                            <option value="box">Показать рамки (все объекты)</option>
+                            <option value="crop">Обрезать (только самый большой объект)</option>
+                        </select>
+                    </div>
+                    <button onclick="findByColor()" class="btn btn-primary w-100">Найти</button>
+                    <div id="searchResults" class="mt-2 small text-muted"></div>
 
                     <h3>Сохранение</h3>
                     <select id="saveFormat" class="form-select">
@@ -394,6 +492,122 @@
                     document.getElementById('error').textContent = '';
                 }
             });
+        }
+
+        function convertColorSpace() {
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            const space = document.getElementById('colorSpace').value;
+            fetch('/convert_color_space', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, space })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function updateThresholdValue(value) {
+            document.getElementById('thresholdValue').value = value;
+        }
+        function updateThresholdSlider(value) {
+            document.getElementById('colorThreshold').value = value;
+        }
+
+        function findByColor() {
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            const colorSpace = document.getElementById('colorSpaceSearch').value;
+            const colorHex = document.getElementById('colorPicker').value;
+            const threshold = parseInt(document.getElementById('colorThreshold').value);
+            const maxObjects = parseInt(document.getElementById('maxObjects').value);
+            const mode = document.getElementById('colorSearchMode').value;
+            
+            // Преобразуем HEX в RGB
+            const r = parseInt(colorHex.substr(1,2), 16);
+            const g = parseInt(colorHex.substr(3,2), 16);
+            const b = parseInt(colorHex.substr(5,2), 16);
+
+            fetch('/find_by_color', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    image: currentImage,
+                    colorSpace,
+                    color: [r, g, b],
+                    threshold,
+                    maxObjects,
+                    mode
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                    document.getElementById('searchResults').textContent = '';
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                    
+                    // Показываем информацию о найденных объектах
+                    const resultsDiv = document.getElementById('searchResults');
+                    if (mode === 'box') {
+                        let resultsText = `Найдено объектов: ${data.total_found}\n`;
+                        data.objects.forEach(obj => {
+                            resultsText += `\nОбъект #${obj.number}:\n`;
+                            resultsText += `Позиция: X=${obj.x}, Y=${obj.y}\n`;
+                            resultsText += `Размер: ${obj.width}x${obj.height}\n`;
+                            resultsText += `Площадь: ${Math.round(obj.area)} пикселей`;
+                        });
+                        resultsDiv.textContent = resultsText;
+                    } else {
+                        resultsDiv.textContent = `Найден объект размером ${data.objects[0].width}x${data.objects[0].height} пикселей`;
+                    }
+                }
+            });
+        }
+
+        // Функции обновления значений яркости и контрастности
+        function updateBrightnessValue(value) {
+            document.getElementById('brightnessValue').value = value;
+        }
+        function updateBrightnessSlider(value) {
+            document.getElementById('brightness').value = value;
+        }
+        function updateContrastValue(value) {
+            document.getElementById('contrastValue').value = value;
+        }
+        function updateContrastSlider(value) {
+            document.getElementById('contrast').value = value;
+        }
+
+        // Функции обновления значений цветового баланса
+        function updateRedValue(value) {
+            document.getElementById('redValue').value = value;
+        }
+        function updateRedSlider(value) {
+            document.getElementById('red').value = value;
+        }
+        function updateGreenValue(value) {
+            document.getElementById('greenValue').value = value;
+        }
+        function updateGreenSlider(value) {
+            document.getElementById('green').value = value;
+        }
+        function updateBlueValue(value) {
+            document.getElementById('blueValue').value = value;
+        }
+        function updateBlueSlider(value) {
+            document.getElementById('blue').value = value;
         }
     </script>
 </body>
