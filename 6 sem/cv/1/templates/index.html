@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн-редактор изображений</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f8f9fa; 
+        }
+        .container { 
+            max-width: 1200px; 
+            position: relative;
+        }
+        .controls { 
+            background-color: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+        }
+        .preview { 
+            background-color: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        .preview img { 
+            max-width: 100%; 
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+        }
+        .error { 
+            color: #dc3545; 
+            margin-top: 10px;
+        }
+        h3 { 
+            margin-top: 20px; 
+            margin-bottom: 15px;
+        }
+        .btn { 
+            margin-top: 10px; 
+        }
+        @media (max-width: 768px) {
+            .preview {
+                position: static;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4 text-center">Онлайн-редактор изображений</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="controls">
+
+                    <input type="file" id="imageInput" accept="image/*" class="form-control mb-3">
+
+                    <button onclick="resetImage()" class="btn btn-warning w-100">Сбросить изменения</button>
+
+                    <h3>Изменение размера</h3>
+                    <input type="number" id="scale" placeholder="Масштаб (например, 0.5)" step="0.1" class="form-control">
+                    <input type="number" id="width" placeholder="Ширина" class="form-control">
+                    <input type="number" id="height" placeholder="Высота" class="form-control">
+                    <button onclick="resizeImage()" class="btn btn-primary w-100">Изменить размер</button>
+
+                    <h3>Вырезка</h3>
+                    <input type="number" id="cropX" placeholder="X" class="form-control">
+                    <input type="number" id="cropY" placeholder="Y" class="form-control">
+                    <input type="number" id="cropWidth" placeholder="Ширина" class="form-control">
+                    <input type="number" id="cropHeight" placeholder="Высота" class="form-control">
+                    <button onclick="cropImage()" class="btn btn-primary w-100">Вырезать</button>
+
+                    <h3>Отражение</h3>
+                    <select id="flipMode" class="form-select">
+                        <option value="0">Вертикальное</option>
+                        <option value="1">Горизонтальное</option>
+                        <option value="-1">Оба</option>
+                    </select>
+                    <button onclick="flipImage()" class="btn btn-primary w-100">Отражение</button>
+
+                    <h3>Поворот</h3>
+                    <input type="number" id="angle" placeholder="Угол (градусы)" class="form-control">
+                    <button onclick="rotateImage()" class="btn btn-primary w-100">Повернуть</button>
+
+                    <h3>Яркость и контрастность</h3>
+                    <input type="range" id="brightness" min="-100" max="100" value="0" class="form-range">
+                    <input type="range" id="contrast" min="0" max="3" step="0.1" value="1" class="form-range">
+                    <button onclick="adjustBrightnessContrast()" class="btn btn-primary w-100">Применить</button>
+
+                    <h3>Цветовой баланс</h3>
+                    <input type="range" id="red" min="0" max="2" step="0.1" value="1" class="form-range">
+                    <input type="range" id="green" min="0" max="2" step="0.1" value="1" class="form-range">
+                    <input type="range" id="blue" min="0" max="2" step="0.1" value="1" class="form-range">
+                    <button onclick="adjustColorBalance()" class="btn btn-primary w-100">Применить</button>
+
+                    <h3>Шум</h3>
+                    <select id="noiseType" class="form-select">
+                        <option value="gaussian">Гауссов</option>
+                        <option value="salt_pepper">Соль и перец</option>
+                    </select>
+                    <button onclick="addNoise()" class="btn btn-primary w-100">Добавить шум</button>
+
+                    <h3>Размытие</h3>
+                    <select id="blurType" class="form-select">
+                        <option value="average">Среднее</option>
+                        <option value="gaussian">Гауссово</option>
+                        <option value="median">Медианное</option>
+                    </select>
+                    <input type="number" id="ksize" placeholder="Размер ядра (нечётное)" value="5" class="form-control">
+                    <button onclick="blurImage()" class="btn btn-primary w-100">Размыть</button>
+
+                    <h3>Сохранение</h3>
+                    <select id="saveFormat" class="form-select">
+                        <option value="png">PNG</option>
+                        <option value="jpeg">JPEG</option>
+                        <option value="tiff">TIFF</option>
+                    </select>
+                    <input type="number" id="quality" placeholder="Качество JPEG (0-100)" value="90" class="form-control">
+                    <button onclick="saveImage()" class="btn btn-primary w-100">Сохранить</button>
+
+
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="preview">
+                    <h3>Предпросмотр</h3>
+                    <img id="previewImage" src="" alt="Предпросмотр изображения">
+                    <p id="error" class="error"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentImage = null;
+
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentImage = event.target.result;
+                fetch('/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: currentImage })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('error').textContent = data.error;
+                    } else {
+                        document.getElementById('previewImage').src = data.preview;
+                        document.getElementById('error').textContent = '';
+                    }
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function resizeImage() {
+            const scale = document.getElementById('scale').value;
+            const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/resize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, scale, width, height })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function cropImage() {
+            const x = document.getElementById('cropX').value;
+            const y = document.getElementById('cropY').value;
+            const width = document.getElementById('cropWidth').value;
+            const height = document.getElementById('cropHeight').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/crop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, x, y, width, height })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function flipImage() {
+            const mode = document.getElementById('flipMode').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/flip', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, mode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function rotateImage() {
+            const angle = document.getElementById('angle').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/rotate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, angle })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function adjustBrightnessContrast() {
+            const brightness = document.getElementById('brightness').value;
+            const contrast = document.getElementById('contrast').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/brightness_contrast', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, brightness, contrast })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function adjustColorBalance() {
+            const red = document.getElementById('red').value;
+            const green = document.getElementById('green').value;
+            const blue = document.getElementById('blue').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/color_balance', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, red, green, blue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function addNoise() {
+            const noiseType = document.getElementById('noiseType').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/noise', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, type: noiseType })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function blurImage() {
+            const blurType = document.getElementById('blurType').value;
+            const ksize = document.getElementById('ksize').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/blur', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, type: blurType, ksize })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        function saveImage() {
+            const format = document.getElementById('saveFormat').value;
+            const quality = document.getElementById('quality').value;
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: currentImage, format, quality })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                return response.json().then(data => { throw new Error(data.error); });
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `отредактированное_изображение.${format}`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                document.getElementById('error').textContent = error.message;
+            });
+        }
+
+        function resetImage() {
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            fetch('/reset', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

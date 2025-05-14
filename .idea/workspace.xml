@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7c91e0e-e48e-4ad1-a0fa-a784866c48e9" name="Changes" comment="6 sem[avtomasts]: did 2.1 program with sintax analyzaer and file generator">
-      <change afterPath="$PROJECT_DIR$/6 sem/tinkoff contest/3/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/tinkoff contest/3/task.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/tinkoff contest/4/main.py" afterDir="false" />
+    <list default="true" id="b7c91e0e-e48e-4ad1-a0fa-a784866c48e9" name="Changes" comment="6 sem[t-bank] 13.05 contest 3d task task">
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/1/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/1/task.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/1/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,17 +47,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.sintax_analyzer.executor&quot;: &quot;Run&quot;,
-    &quot;Python.task.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.app.executor": "Run",
+    "Python.main (1).executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.sintax_analyzer.executor": "Run",
+    "Python.task.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master"
   }
-}</component>
-  <component name="RunManager" selected="Python.main (1)">
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Study\uni\university\6 sem\cv\1\templates" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.app">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="university" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/1" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/6 sem/cv/1/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="university" />
       <option name="ENV_FILES" value="" />
@@ -147,6 +176,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.app" />
         <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.sintax_analyzer" />
@@ -194,13 +224,22 @@
       <option name="project" value="LOCAL" />
       <updated>1747052236272</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="6 sem[t-bank] 13.05 contest 3d task task">
+      <option name="closed" value="true" />
+      <created>1747229366845</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1747229366845</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="6 sem: did 2 program for avtomats" />
     <MESSAGE value="6 sem[avtomasts]: did 2.1 program with sintax analyzaer and file generator" />
-    <option name="LAST_COMMIT_MESSAGE" value="6 sem[avtomasts]: did 2.1 program with sintax analyzaer and file generator" />
+    <MESSAGE value="6 sem[t-bank] 13.05 contest 3d task task" />
+    <option name="LAST_COMMIT_MESSAGE" value="6 sem[t-bank] 13.05 contest 3d task task" />
   </component>
 </project>
