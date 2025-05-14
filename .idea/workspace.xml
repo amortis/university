@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7c91e0e-e48e-4ad1-a0fa-a784866c48e9" name="Changes" comment="6 sem: did 2 program for avtomats">
-      <change afterPath="$PROJECT_DIR$/6 sem/avtomats/second project/with sintax analyzer/program on cs.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/avtomats/second project/with sintax analyzer/sintax_analyzer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/avtomats/second project/with sintax analyzer/tests.md" afterDir="false" />
+    <list default="true" id="b7c91e0e-e48e-4ad1-a0fa-a784866c48e9" name="Changes" comment="6 sem[avtomasts]: did 2.1 program with sintax analyzaer and file generator">
+      <change afterPath="$PROJECT_DIR$/6 sem/tinkoff contest/3/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/tinkoff contest/3/task.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/tinkoff contest/4/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,15 +46,61 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.sintax_analyzer.executor": "Run",
-    "Python.task.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.sintax_analyzer.executor&quot;: &quot;Run&quot;,
+    &quot;Python.task.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Python.sintax_analyzer">
+}</component>
+  <component name="RunManager" selected="Python.main (1)">
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="university" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/tinkoff contest/4" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/6 sem/tinkoff contest/4/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="university" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/tinkoff contest/3" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/6 sem/tinkoff contest/3/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="sintax_analyzer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="university" />
       <option name="ENV_FILES" value="" />
@@ -101,6 +147,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.sintax_analyzer" />
         <item itemvalue="Python.task" />
       </list>
@@ -138,12 +186,21 @@
       <option name="project" value="LOCAL" />
       <updated>1746457572497</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="6 sem[avtomasts]: did 2.1 program with sintax analyzaer and file generator">
+      <option name="closed" value="true" />
+      <created>1747052236272</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1747052236272</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="6 sem: did 2 program for avtomats" />
-    <option name="LAST_COMMIT_MESSAGE" value="6 sem: did 2 program for avtomats" />
+    <MESSAGE value="6 sem[avtomasts]: did 2.1 program with sintax analyzaer and file generator" />
+    <option name="LAST_COMMIT_MESSAGE" value="6 sem[avtomasts]: did 2.1 program with sintax analyzaer and file generator" />
   </component>
 </project>
