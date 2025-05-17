@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7c91e0e-e48e-4ad1-a0fa-a784866c48e9" name="Changes" comment="6 sem[cv] did 2st task (the same dir as 1st)">
-      <change afterPath="$PROJECT_DIR$/6 sem/cv/3/3.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/cv/3/akaze/akaze.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/cv/3/cat.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/cv/3/orb/orb.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/cv/3/task.md" afterDir="false" />
+    <list default="true" id="b7c91e0e-e48e-4ad1-a0fa-a784866c48e9" name="Changes" comment="6 sem[cv] did 3st task">
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/4/1/task1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/4/2/task2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/4/3/task3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/4/4/landscape.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/4/4/object.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/4/4/task4.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/4/task.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,6 +52,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.akaze (1).executor": "Run",
     "Python.akaze.executor": "Run",
     "Python.app.executor": "Run",
     "Python.main (1).executor": "Run",
@@ -58,64 +61,29 @@
     "Python.orb (1).executor": "Run",
     "Python.sintax_analyzer.executor": "Run",
     "Python.task.executor": "Run",
+    "Python.task1.executor": "Run",
+    "Python.task2.executor": "Run",
+    "Python.task3.executor": "Run",
+    "Python.task4.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/Study/uni/university/6 sem/cv/4/1",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Study\uni\university\6 sem\cv\4\1" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Study\uni\university\6 sem\cv\4\4" />
+      <recent name="D:\Study\uni\university\6 sem\cv\4\1" />
       <recent name="D:\Study\uni\university\6 sem\cv\3" />
       <recent name="D:\Study\uni\university\6 sem\cv\3\akaze" />
       <recent name="D:\Study\uni\university\6 sem\cv\3\orb" />
-      <recent name="D:\Study\uni\university\6 sem\cv\1\templates" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.akaze (1)">
-    <configuration name="akaze (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="university" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/3/akaze" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/6 sem/cv/3/akaze/akaze.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="akaze" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="university" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/3" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="D:\Study\uni\university\6 sem\cv\3\akaze\akaze.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.app">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="university" />
       <option name="ENV_FILES" value="" />
@@ -138,7 +106,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="orb (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="task1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="university" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -147,11 +115,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/3/orb" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/4" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/6 sem/cv/3/orb/orb.py" />
+      <option name="SCRIPT_NAME" value="D:\Study\uni\university\6 sem\cv\4\1\task1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -160,7 +128,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="orb" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="task2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="university" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -169,11 +137,55 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/4/2" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="D:\Study\uni\university\6 sem\cv\3\orb\orb.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/6 sem/cv/4/2/task2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="university" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/4/3" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/6 sem/cv/4/3/task3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task4" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="university" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/6 sem/cv/4/4" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/6 sem/cv/4/4/task4.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -184,11 +196,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.akaze (1)" />
-        <item itemvalue="Python.orb (1)" />
-        <item itemvalue="Python.akaze" />
-        <item itemvalue="Python.orb" />
         <item itemvalue="Python.app" />
+        <item itemvalue="Python.task4" />
+        <item itemvalue="Python.task3" />
+        <item itemvalue="Python.task2" />
+        <item itemvalue="Python.task1" />
       </list>
     </recent_temporary>
   </component>
@@ -256,7 +268,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747233580650</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="6 sem[cv] did 3st task">
+      <option name="closed" value="true" />
+      <created>1747234796877</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1747234796877</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -266,6 +286,7 @@
     <MESSAGE value="6 sem[t-bank] 13.05 contest 3d task task" />
     <MESSAGE value="6 sem[cv] did 1st task" />
     <MESSAGE value="6 sem[cv] did 2st task (the same dir as 1st)" />
-    <option name="LAST_COMMIT_MESSAGE" value="6 sem[cv] did 2st task (the same dir as 1st)" />
+    <MESSAGE value="6 sem[cv] did 3st task" />
+    <option name="LAST_COMMIT_MESSAGE" value="6 sem[cv] did 3st task" />
   </component>
 </project>

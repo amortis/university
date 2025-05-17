@@ -165,6 +165,43 @@
                     <button onclick="blurImage()" class="btn btn-primary w-100">Размыть</button>
 
 
+                    
+                    <div id="globalParams" class="mt-2">
+                        <div class="mb-2">
+                            <label>Пороговое значение:</label>
+                            <div class="input-group">
+                                <input type="range" id="threshold" min="0" max="255" value="127" class="form-range"
+                                       oninput="updateThresholdValue(this.value)">
+                                <input type="number" id="thresholdValue" class="form-control" style="width: 80px" 
+                                       min="0" max="255" value="127" onchange="updateThresholdSlider(this.value)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="adaptiveParams" class="mt-2" style="display: none;">
+                        <div class="mb-2">
+                            <label>Размер блока:</label>
+                            <select id="blockSize" class="form-select">
+                                <option value="3">3x3</option>
+                                <option value="5">5x5</option>
+                                <option value="7">7x7</option>
+                                <option value="9">9x9</option>
+                                <option value="11">11x11</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label>Константа C:</label>
+                            <div class="input-group">
+                                <input type="range" id="constantC" min="-50" max="50" value="2" class="form-range"
+                                       oninput="updateConstantValue(this.value)">
+                                <input type="number" id="constantValue" class="form-control" style="width: 80px" 
+                                       min="-50" max="50" value="2" onchange="updateConstantSlider(this.value)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="binarizeImage()" class="btn btn-primary w-100">Применить бинаризацию</button>
+
                     <hr class="my-4 border-2 border-primary">
                     <h2 class="text-center mb-4">Задание 2</h2>
 
@@ -216,6 +253,16 @@
                     </div>
                     <button onclick="findByColor()" class="btn btn-primary w-100">Найти</button>
                     <div id="searchResults" class="mt-2 small text-muted"></div>
+
+
+                    <hr class="my-4 border-2 border-primary">
+                    <h2 class="text-center mb-4">Задание 4(5)</h2>
+                    <h3>Бинаризация</h3>
+                    <select id="binarizationType" class="form-select">
+                        <option value="global">Глобальная</option>
+                        <option value="adaptive">Адаптивная</option>
+                        <option value="otsu">Метод Оцу</option>
+                    </select>
 
                     <h3>Сохранение</h3>
                     <select id="saveFormat" class="form-select">
@@ -519,7 +566,7 @@
             document.getElementById('thresholdValue').value = value;
         }
         function updateThresholdSlider(value) {
-            document.getElementById('colorThreshold').value = value;
+            document.getElementById('threshold').value = value;
         }
 
         function findByColor() {
@@ -608,6 +655,56 @@
         }
         function updateBlueSlider(value) {
             document.getElementById('blue').value = value;
+        }
+
+        // Добавляем JavaScript функции для управления параметрами бинаризации
+        function updateConstantValue(value) {
+            document.getElementById('constantValue').value = value;
+        }
+        function updateConstantSlider(value) {
+            document.getElementById('constantC').value = value;
+        }
+
+        // Показываем/скрываем параметры в зависимости от типа бинаризации
+        document.getElementById('binarizationType').addEventListener('change', function() {
+            const type = this.value;
+            document.getElementById('globalParams').style.display = 
+                (type === 'global' || type === 'otsu') ? 'block' : 'none';
+            document.getElementById('adaptiveParams').style.display = 
+                type === 'adaptive' ? 'block' : 'none';
+        });
+
+        function binarizeImage() {
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            const type = document.getElementById('binarizationType').value;
+            const params = {
+                image: currentImage,
+                type: type
+            };
+
+            if (type === 'global' || type === 'otsu') {
+                params.threshold = parseInt(document.getElementById('threshold').value);
+            } else if (type === 'adaptive') {
+                params.blockSize = parseInt(document.getElementById('blockSize').value);
+                params.constantC = parseInt(document.getElementById('constantC').value);
+            }
+
+            fetch('/binarize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(params)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
         }
     </script>
 </body>

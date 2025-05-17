@@ -304,6 +304,45 @@ def blur_image():
         return jsonify({'error': f'Ошибка размытия: {str(e)}'}), 400
 
 
+@app.route('/binarize', methods=['POST'])
+def binarize_image():
+    try:
+        data = request.json
+        img_base64 = data.get('image')
+        binarization_type = data.get('type')
+        
+        img, error = base64_to_image(img_base64)
+        if img is None:
+            return jsonify({'error': f'Ошибка обработки: {error}'}), 400
+
+        # Преобразуем изображение в оттенки серого
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        if binarization_type == 'global':
+            threshold = int(data.get('threshold', 127))
+            _, binary = cv2.threshold(gray, threshold, 255, cv2.THRESH_BINARY)
+        elif binarization_type == 'adaptive':
+            block_size = int(data.get('blockSize', 11))
+            constant_c = int(data.get('constantC', 2))
+            # Убедимся, что размер блока нечетный
+            if block_size % 2 == 0:
+                block_size += 1
+            binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                         cv2.THRESH_BINARY, block_size, constant_c)
+        elif binarization_type == 'otsu':
+            # Для метода Оцу пороговое значение не используется
+            _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        else:
+            return jsonify({'error': 'Неизвестный тип бинаризации'}), 400
+
+        # Преобразуем одноканальное изображение обратно в трехканальное для отображения
+        binary_rgb = cv2.cvtColor(binary, cv2.COLOR_GRAY2BGR)
+        result = image_to_base64(binary_rgb)
+        return jsonify({'result': result})
+    except Exception as e:
+        return jsonify({'error': f'Ошибка бинаризации: {str(e)}'}), 400
+
+
 @app.route('/save', methods=['POST'])
 def save_image():
     try:
