@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7c91e0e-e48e-4ad1-a0fa-a784866c48e9" name="Changes" comment="6 sem[cv] did 4st task">
-      <change afterPath="$PROJECT_DIR$/6 sem/cv/5/5.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/cv/5/task.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6 sem/cv/5/task5.py" afterDir="false" />
+    <list default="true" id="b7c91e0e-e48e-4ad1-a0fa-a784866c48e9" name="Changes" comment="6 sem[cv] did 5st task">
+      <change afterPath="$PROJECT_DIR$/6 sem/cv/6/task.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/6 sem/cv/1/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/6 sem/cv/1/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/6 sem/cv/1/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/6 sem/cv/1/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/6 sem/cv/4/task.md" beforeDir="false" afterPath="$PROJECT_DIR$/6 sem/cv/4/task.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +81,7 @@
       <recent name="D:\Study\uni\university\6 sem\cv\3\akaze" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.task5">
+  <component name="RunManager" selected="Python.app">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="university" />
       <option name="ENV_FILES" value="" />
@@ -193,8 +194,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.task5" />
         <item itemvalue="Python.app" />
+        <item itemvalue="Python.task5" />
         <item itemvalue="Python.task4" />
         <item itemvalue="Python.task3" />
         <item itemvalue="Python.task2" />
@@ -281,7 +282,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747472308519</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="6 sem[cv] did 5st task">
+      <option name="closed" value="true" />
+      <created>1747473102337</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1747473102337</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -293,6 +302,7 @@
     <MESSAGE value="6 sem[cv] did 2st task (the same dir as 1st)" />
     <MESSAGE value="6 sem[cv] did 3st task" />
     <MESSAGE value="6 sem[cv] did 4st task" />
-    <option name="LAST_COMMIT_MESSAGE" value="6 sem[cv] did 4st task" />
+    <MESSAGE value="6 sem[cv] did 5st task" />
+    <option name="LAST_COMMIT_MESSAGE" value="6 sem[cv] did 5st task" />
   </component>
 </project>

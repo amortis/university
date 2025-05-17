@@ -343,6 +343,150 @@ def binarize_image():
         return jsonify({'error': f'Ошибка бинаризации: {str(e)}'}), 400
 
 
+@app.route('/segment', methods=['POST'])
+def segment_image():
+    try:
+        data = request.json
+        img_base64 = data.get('image')
+        segmentation_type = data.get('type')
+        
+        img, error = base64_to_image(img_base64)
+        if img is None:
+            return jsonify({'error': f'Ошибка обработки: {error}'}), 400
+
+        if segmentation_type == 'kmeans':
+            # K-Means сегментация
+            k = int(data.get('clusters', 3))
+            max_iter = int(data.get('maxIter', 100))
+            epsilon = float(data.get('epsilon', 0.2))
+            
+            # Преобразуем изображение в массив пикселей
+            pixels = img.reshape(-1, 3).astype(np.float32)
+            
+            # Критерии остановки
+            criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, max_iter, epsilon)
+            
+            # Выполняем K-Means кластеризацию
+            _, labels, centers = cv2.kmeans(pixels, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+            
+            # Преобразуем метки обратно в размеры изображения
+            segmented = centers[labels.flatten()].reshape(img.shape).astype(np.uint8)
+
+        elif segmentation_type == 'meanshift':
+            # Mean Shift сегментация
+            spatial_radius = int(data.get('spatialRadius', 100))
+            color_radius = int(data.get('colorRadius', 20))
+            max_level = int(data.get('maxLevel', 2))
+            color_space = data.get('colorSpace', 'LAB')
+            
+            # Преобразуем в нужное цветовое пространство
+            if color_space == 'LAB':
+                img_converted = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
+            elif color_space == 'HSV':
+                img_converted = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+            elif color_space == 'YUV':
+                img_converted = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+            else:
+                img_converted = img
+            
+            # Применяем Mean Shift
+            segmented = cv2.pyrMeanShiftFiltering(img_converted, spatial_radius, color_radius, maxLevel=max_level)
+            
+            # Преобразуем обратно в BGR
+            if color_space != 'BGR':
+                segmented = cv2.cvtColor(segmented, cv2.COLOR_Lab2BGR if color_space == 'LAB' else 
+                                       cv2.COLOR_HSV2BGR if color_space == 'HSV' else 
+                                       cv2.COLOR_YUV2BGR)
+
+        elif segmentation_type == 'dbscan':
+            # DBSCAN сегментация
+            eps = float(data.get('eps', 3.0))
+            min_samples = int(data.get('minSamples', 10))
+            color_space = data.get('colorSpace', 'RGB')
+            noise_handling = data.get('noiseHandling', 'gray')
+            
+            # Преобразуем в нужное цветовое пространство
+            if color_space == 'HSV':
+                img_converted = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+            elif color_space == 'LAB':
+                img_converted = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
+            else:
+                img_converted = img
+            
+            # Преобразуем изображение в массив пикселей
+            pixels = img_converted.reshape(-1, 3)
+            
+            # Применяем DBSCAN
+            from sklearn.cluster import DBSCAN
+            dbscan = DBSCAN(eps=eps, min_samples=min_samples)
+            labels = dbscan.fit_predict(pixels)
+            
+            # Обработка шума
+            if noise_handling == 'gray':
+                # Заменяем шумовые точки (-1) на серый цвет
+                pixels[labels == -1] = [128, 128, 128]
+            elif noise_handling == 'nearest':
+                # Находим ближайший кластер для каждой шумовой точки
+                from sklearn.neighbors import NearestNeighbors
+                nbrs = NearestNeighbors(n_neighbors=1).fit(pixels[labels != -1])
+                distances, indices = nbrs.kneighbors(pixels[labels == -1])
+                pixels[labels == -1] = pixels[labels != -1][indices.flatten()]
+            # Для 'remove' ничего не делаем, оставляем шумовые точки как есть
+            
+            # Преобразуем обратно в изображение
+            segmented = pixels.reshape(img.shape).astype(np.uint8)
+            
+            # Преобразуем обратно в BGR если нужно
+            if color_space != 'BGR':
+                segmented = cv2.cvtColor(segmented, cv2.COLOR_HSV2BGR if color_space == 'HSV' else 
+                                       cv2.COLOR_Lab2BGR if color_space == 'LAB' else segmented)
+
+        elif segmentation_type == 'snake':
+            # Active Contour (Snake) сегментация
+            alpha = float(data.get('alpha', 0.2))
+            beta = float(data.get('beta', 0.5))
+            resolution = int(data.get('resolution', 300))
+            radius = int(data.get('radius', 110))
+            center_x = int(data.get('centerX', 170))
+            center_y = int(data.get('centerY', 170))
+            
+            # Преобразуем в оттенки серого
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            
+            # Генерируем начальные точки контура
+            def circle_points(resolution, center, radius):
+                radians = np.linspace(0, 2*np.pi, resolution)
+                c = center[1] + radius*np.cos(radians)
+                r = center[0] + radius*np.sin(radians)
+                return np.array([c, r]).T
+            
+            # Создаем начальный контур
+            points = circle_points(resolution, [center_y, center_x], radius)[:-1]
+            
+            # Применяем активный контур
+            from skimage.segmentation import active_contour
+            snake = active_contour(gray, points, alpha=alpha, beta=beta)
+            
+            # Создаем маску для сегментации
+            mask = np.zeros_like(gray)
+            snake_points = snake.astype(np.int32)
+            cv2.fillPoly(mask, [snake_points], 255)
+            
+            # Применяем маску к исходному изображению
+            segmented = cv2.bitwise_and(img, img, mask=mask)
+            
+            # Добавляем контур на изображение для визуализации
+            cv2.polylines(segmented, [snake_points], True, (0, 255, 0), 2)
+
+        else:
+            return jsonify({'error': 'Неизвестный тип сегментации'}), 400
+
+        result = image_to_base64(segmented)
+        return jsonify({'result': result})
+    except Exception as e:
+        return jsonify({'error': f'Ошибка сегментации: {str(e)}'}), 400
+
+
 @app.route('/save', methods=['POST'])
 def save_image():
     try:

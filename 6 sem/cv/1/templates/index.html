@@ -203,6 +203,114 @@
                     <button onclick="binarizeImage()" class="btn btn-primary w-100">Применить бинаризацию</button>
 
                     <hr class="my-4 border-2 border-primary">
+                    <h2 class="text-center mb-4">Задание 7</h2>
+                    <h3>Сегментация изображений</h3>
+                    <select id="segmentationType" class="form-select">
+                        <option value="kmeans">K-Means Clustering</option>
+                        <option value="meanshift">Mean Shift</option>
+                        <option value="dbscan">DBSCAN</option>
+                        <option value="snake">Active Contour (Snake)</option>
+                    </select>
+
+                    <!-- Параметры для K-Means -->
+                    <div id="kmeansParams" class="mt-2">
+                        <div class="mb-2">
+                            <label>Количество кластеров:</label>
+                            <input type="number" id="kmeansClusters" class="form-control" min="2" max="10" value="3">
+                        </div>
+                        <div class="mb-2">
+                            <label>Максимум итераций:</label>
+                            <input type="number" id="kmeansMaxIter" class="form-control" min="10" max="200" value="100">
+                        </div>
+                        <div class="mb-2">
+                            <label>Точность (epsilon):</label>
+                            <input type="number" id="kmeansEpsilon" class="form-control" min="0.1" max="1.0" step="0.1" value="0.2">
+                        </div>
+                    </div>
+
+                    <!-- Параметры для Mean Shift -->
+                    <div id="meanshiftParams" class="mt-2" style="display: none;">
+                        <div class="mb-2">
+                            <label>Пространственный радиус:</label>
+                            <input type="number" id="spatialRadius" class="form-control" min="10" max="200" value="100">
+                        </div>
+                        <div class="mb-2">
+                            <label>Цветовой радиус:</label>
+                            <input type="number" id="colorRadius" class="form-control" min="5" max="50" value="20">
+                        </div>
+                        <div class="mb-2">
+                            <label>Максимальный уровень пирамиды:</label>
+                            <input type="number" id="maxLevel" class="form-control" min="0" max="4" value="2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Цветовое пространство:</label>
+                            <select id="meanshiftColorSpace" class="form-select">
+                                <option value="LAB">LAB</option>
+                                <option value="HSV">HSV</option>
+                                <option value="YUV">YUV</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Параметры для DBSCAN -->
+                    <div id="dbscanParams" class="mt-2" style="display: none;">
+                        <div class="mb-2">
+                            <label>Радиус поиска (eps):</label>
+                            <input type="number" id="dbscanEps" class="form-control" min="1" max="10" step="0.1" value="3">
+                        </div>
+                        <div class="mb-2">
+                            <label>Минимум точек в кластере:</label>
+                            <input type="number" id="dbscanMinSamples" class="form-control" min="5" max="50" value="10">
+                        </div>
+                        <div class="mb-2">
+                            <label>Цветовое пространство:</label>
+                            <select id="dbscanColorSpace" class="form-select">
+                                <option value="RGB">RGB</option>
+                                <option value="HSV">HSV</option>
+                                <option value="LAB">LAB</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label>Обработка шума:</label>
+                            <select id="dbscanNoiseHandling" class="form-select">
+                                <option value="gray">Серый цвет</option>
+                                <option value="nearest">Ближайший кластер</option>
+                                <option value="remove">Удалить</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Параметры для Active Contour -->
+                    <div id="snakeParams" class="mt-2" style="display: none;">
+                        <div class="mb-2">
+                            <label>Внутренняя энергия (alpha):</label>
+                            <input type="number" id="snakeAlpha" class="form-control" min="0.1" max="1.0" step="0.1" value="0.2">
+                        </div>
+                        <div class="mb-2">
+                            <label>Внешняя энергия (beta):</label>
+                            <input type="number" id="snakeBeta" class="form-control" min="0.1" max="1.0" step="0.1" value="0.5">
+                        </div>
+                        <div class="mb-2">
+                            <label>Разрешение контура:</label>
+                            <input type="number" id="snakeResolution" class="form-control" min="100" max="500" value="300">
+                        </div>
+                        <div class="mb-2">
+                            <label>Радиус начального контура:</label>
+                            <input type="number" id="snakeRadius" class="form-control" min="50" max="200" value="110">
+                        </div>
+                        <div class="mb-2">
+                            <label>Центр контура X:</label>
+                            <input type="number" id="snakeCenterX" class="form-control" min="0" max="1000" value="170">
+                        </div>
+                        <div class="mb-2">
+                            <label>Центр контура Y:</label>
+                            <input type="number" id="snakeCenterY" class="form-control" min="0" max="1000" value="170">
+                        </div>
+                    </div>
+
+                    <button onclick="segmentImage()" class="btn btn-primary w-100">Применить сегментацию</button>
+
+                    <hr class="my-4 border-2 border-primary">
                     <h2 class="text-center mb-4">Задание 2</h2>
 
                     <h3>Цветовое пространство</h3>
@@ -691,6 +799,73 @@
             }
 
             fetch('/binarize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(params)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error').textContent = data.error;
+                } else {
+                    currentImage = data.result;
+                    document.getElementById('previewImage').src = data.result;
+                    document.getElementById('error').textContent = '';
+                }
+            });
+        }
+
+        // Добавляем JavaScript функции для управления параметрами сегментации
+        document.getElementById('segmentationType').addEventListener('change', function() {
+            const type = this.value;
+            // Скрываем все блоки параметров
+            document.getElementById('kmeansParams').style.display = 'none';
+            document.getElementById('meanshiftParams').style.display = 'none';
+            document.getElementById('dbscanParams').style.display = 'none';
+            document.getElementById('snakeParams').style.display = 'none';
+            // Показываем нужный блок
+            document.getElementById(type + 'Params').style.display = 'block';
+        });
+
+        function segmentImage() {
+            if (!currentImage) return alert('Сначала загрузите изображение!');
+
+            const type = document.getElementById('segmentationType').value;
+            const params = {
+                image: currentImage,
+                type: type
+            };
+
+            // Собираем параметры в зависимости от типа сегментации
+            switch(type) {
+                case 'kmeans':
+                    params.clusters = parseInt(document.getElementById('kmeansClusters').value);
+                    params.maxIter = parseInt(document.getElementById('kmeansMaxIter').value);
+                    params.epsilon = parseFloat(document.getElementById('kmeansEpsilon').value);
+                    break;
+                case 'meanshift':
+                    params.spatialRadius = parseInt(document.getElementById('spatialRadius').value);
+                    params.colorRadius = parseInt(document.getElementById('colorRadius').value);
+                    params.maxLevel = parseInt(document.getElementById('maxLevel').value);
+                    params.colorSpace = document.getElementById('meanshiftColorSpace').value;
+                    break;
+                case 'dbscan':
+                    params.eps = parseFloat(document.getElementById('dbscanEps').value);
+                    params.minSamples = parseInt(document.getElementById('dbscanMinSamples').value);
+                    params.colorSpace = document.getElementById('dbscanColorSpace').value;
+                    params.noiseHandling = document.getElementById('dbscanNoiseHandling').value;
+                    break;
+                case 'snake':
+                    params.alpha = parseFloat(document.getElementById('snakeAlpha').value);
+                    params.beta = parseFloat(document.getElementById('snakeBeta').value);
+                    params.resolution = parseInt(document.getElementById('snakeResolution').value);
+                    params.radius = parseInt(document.getElementById('snakeRadius').value);
+                    params.centerX = parseInt(document.getElementById('snakeCenterX').value);
+                    params.centerY = parseInt(document.getElementById('snakeCenterY').value);
+                    break;
+            }
+
+            fetch('/segment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(params)
