@@ -2,81 +2,69 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-def split_and_merge(image, min_size, homogeneity_threshold, visualize=False):
-    rows, cols = image.shape
-    segmented_image = np.zeros_like(image, dtype=np.uint8)
-    visualization = []  # Для хранения промежуточных результатов
 
-    def process_region(x, y, width, height, region_image, level=0):
-        nonlocal visualization
+def watershed_segmentation(image_path):
+    # 1. Загрузка изображения
+    img = cv2.imread(image_path)
+    if img is None:
+        print(f"Error: Could not load image from {image_path}")
+        return None, None, None, None
 
-        region_mean = np.mean(region_image)
-        region_std = np.std(region_image)
+    # Преобразование в градации серого
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        if width <= min_size or height <= min_size or region_std <= homogeneity_threshold:
-            segmented_image[y:y+height, x:x+width] = region_mean
+    # 2. Бинаризация и удаление шума
+    _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    kernel = np.ones((3, 3), np.uint8)
+    opening = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=2)
 
-            if visualize and level < 3:  # Ограничиваем глубину визуализации
-                viz = segmented_image.copy()
-                cv2.rectangle(viz, (x,y), (x+width,y+height), (255,255,255), 1)
-                visualization.append((viz, f"Level {level}: Merge {width}x{height}"))
-        else:
-            half_width = width // 2
-            half_height = height // 2
+    # 3. Фон и объекты
+    sure_bg = cv2.dilate(opening, kernel, iterations=15)
+    dist_transform = cv2.distanceTransform(opening, cv2.DIST_L2, 5)
+    _, sure_fg = cv2.threshold(dist_transform, 0.6 * dist_transform.max(), 255, 0)
 
-            if visualize and level < 3:
-                viz = segmented_image.copy()
-                cv2.rectangle(viz, (x,y), (x+width,y+height), (150,150,150), 1)
-                visualization.append((viz, f"Level {level}: Split {width}x{height}"))
+    # 4. Метки
+    sure_fg = np.uint8(sure_fg)
+    unknown = cv2.subtract(sure_bg, sure_fg)
+    _, markers = cv2.connectedComponents(sure_fg)
+    markers = markers + 1
+    markers[unknown == 255] = 0
 
-            # Рекурсивная обработка 4 подрегионов
-            process_region(x, y, half_width, half_height,
-                          region_image[:half_height, :half_width], level+1)
-            process_region(x + half_width, y, width - half_width, half_height,
-                          region_image[:half_height, half_width:], level+1)
-            process_region(x, y + half_height, half_width, height - half_height,
-                          region_image[half_height:, :half_width], level+1)
-            process_region(x + half_width, y + half_height,
-                          width - half_width, height - half_height,
-                          region_image[half_height:, half_width:], level+1)
+    # 5. Водораздел
+    img_ws = img.copy()
+    cv2.watershed(img_ws, markers)
+    img_ws[markers == -1] = [0, 0, 255]
 
-    process_region(0, 0, cols, rows, image)
+    # 6. Подсчёт размеров сегментов
+    unique_labels = np.unique(markers)
+    segment_sizes = []
+    for label in unique_labels:
+        if label <= 0:  # Пропускаем фон и границы
+            continue
+        size = np.sum(markers == label)  # Количество пикселей для текущего сегмента
+        segment_sizes.append(size)
 
-    if visualize:
-        plt.figure(figsize=(15, 8))
-        for i, (img, title) in enumerate(visualization[:12]):  # Показываем первые 12 шагов
-            plt.subplot(3, 4, i+1)
-            plt.imshow(img, cmap='gray')
-            plt.title(title)
-            plt.axis('off')
-        plt.tight_layout()
-        plt.show()
+    num_segments = len(segment_sizes)  # Количество сегментов
 
-    return segmented_image
+    return img_ws, markers, num_segments, segment_sizes
 
-# Загрузка изображения
-image_path = "../4/4/object.jpg"
-image_original = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-if image_original is None:
-    print(f"Error: Could not load image from {image_path}")
-    exit()
 
-# Параметры для экспериментов
-params = [
-    {'min_size': 80, 'threshold': 10},   # Большие регионы, низкая чувствительность
-    {'min_size': 40, 'threshold': 20},   # Средние регионы, средняя чувствительность
-    {'min_size': 20, 'threshold': 5},    # Маленькие регионы, высокая чувствительность
-    {'min_size': 10, 'threshold': 2}     # Очень мелкие регионы
-]
+# Список изображений для обработки
+path = "../3/cat.jpg"
+img_ws, markers, num_segments, segment_sizes = watershed_segmentation(path)
 
-# Проведение экспериментов
-for i, param in enumerate(params):
-    print(f"\nЭксперимент {i+1}: min_size={param['min_size']}, threshold={param['threshold']}")
+# Визуализация результатов
+if img_ws is not None:
+    img = cv2.imread(path)  # Загружаем оригинальное изображение для отображения
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
+    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    plt.title("Оригинал")
+    plt.axis('off')
 
-    segmented = split_and_merge(image_original.copy(),
-                              param['min_size'],
-                              param['threshold'],
-                              visualize=True)
-
-    cv2.imwrite(f'split_merge_exp_{i+1}.jpg', segmented)
+    plt.subplot(1, 2, 2)
+    plt.imshow(cv2.cvtColor(img_ws, cv2.COLOR_BGR2RGB))
+    plt.title("Watershed Segmentation")
+    plt.axis('off')
+    plt.tight_layout()
     plt.show()
