@@ -57,3 +57,4 @@ for ax, (func, title) in zip(axs.flatten(), functions):
 
 plt.tight_layout()
 plt.show()
+
